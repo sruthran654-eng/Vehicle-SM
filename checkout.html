@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - DriveHub</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        .checkout-container {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+            display: flex;
+            gap: 3rem;
+            align-items: flex-start;
+        }
+        
+        .checkout-main {
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .checkout-sidebar {
+            flex: 1;
+            background: var(--bg-white);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+            position: sticky;
+            top: 100px;
+            box-shadow: var(--glass-shadow);
+        }
+
+        .checkout-section {
+            background: var(--bg-white);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--glass-shadow);
+        }
+
+        .checkout-section h2 {
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        .checkout-section h2 i {
+            color: var(--primary);
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .payment-method {
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .payment-method.active {
+            border-color: var(--primary);
+            background: rgba(250, 204, 21, 0.05);
+        }
+
+        .payment-method i {
+            font-size: 2rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .payment-method.active i {
+            color: var(--primary);
+        }
+
+        .payment-method span {
+            display: block;
+            font-weight: 500;
+        }
+
+        .payment-method input[type="radio"] {
+            display: none;
+        }
+
+        /* Order Summary */
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        .summary-totals {
+            margin-top: 2rem;
+        }
+
+        .summary-total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+        }
+
+        .summary-total-row.final-total {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+            border-top: 1px solid var(--border-color);
+            padding-top: 1.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .promo-code-container {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .promo-code-container input {
+            flex: 1;
+            background: var(--bg-main);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.8rem 1rem;
+            color: var(--text-main);
+            outline: none;
+            font-family: inherit;
+        }
+
+        .car-info-badge {
+            background: rgba(250, 204, 21, 0.1);
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 900px) {
+            .checkout-container {
+                flex-direction: column;
+            }
+            .checkout-sidebar {
+                position: static;
+                width: 100%;
+            }
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            .form-row .form-group {
+                margin-bottom: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body class="dark-theme">
+
+    <!-- Top Navbar -->
+    <nav class="top-navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <a href="index.html" class="logo-area" style="text-decoration: none;">
+                    <i class='bx bxs-car-mechanic logo-icon'></i>
+                    <span class="logo-text">DriveHub</span>
+                </a>
+            </div>
+            <div class="nav-right">
+                <a href="index.html" class="nav-link"><i class='bx bx-arrow-back'></i> Back to Home</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="checkout-container">
+        
+        <!-- Left Column: Forms -->
+        <div class="checkout-main">
+            <!-- Personal Information -->
+            <div class="checkout-section">
+                <h2><i class='bx bx-user-circle'></i> Customer Details</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="custName" placeholder="Enter your full name" style="width: 100%; padding: 0.8rem 1rem; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-main);" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" id="custPhone" placeholder="10-digit mobile number" style="width: 100%; padding: 0.8rem 1rem; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-main);" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="custEmail" placeholder="Enter your email" style="width: 100%; padding: 0.8rem 1rem; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-main);">
+                </div>
+            </div>
+
+            <!-- Service/Delivery Address -->
+            <div class="checkout-section">
+                <h2><i class='bx bx-map-pin'></i> Delivery & Service Location</h2>
+                <div class="form-group">
+                    <label>Address Line 1</label>
+                    <input type="text" id="addrLine1" placeholder="House/Flat No., Building Name" style="width: 100%; padding: 0.8rem 1rem; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-main);" required>
+                </div>
+                <div class="form-group">
+                    <label>Address Line 2 (Optional)</label>
+                    <input type="text" id="addrLine2" placeholder="Street, Sector, Landmark" style="width: 100%; padding: 0.8rem 1rem; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-main);">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>City</label>
+                        <input type="text" id="addrCity" placeholder="City" style="width: 100%; padding: 0.8rem 1rem; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-main);" required>
+                    </div>
+                    <div class="form-group">
+                        <label>PIN Code</label>
+                        <input type="text" id="addrPin" placeholder="6-digit PIN" style="width: 100%; padding: 0.8rem 1rem; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-main);" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Method -->
+            <div class="checkout-section">
+                <h2><i class='bx bx-credit-card'></i> Payment Method</h2>
+                <div class="payment-methods">
+                    <label class="payment-method active">
+                        <input type="radio" name="paymentMethod" value="upi" checked>
+                        <i class='bx bx-qr-scan'></i>
+                        <span>UPI</span>
+                    </label>
+                    <label class="payment-method">
+                        <input type="radio" name="paymentMethod" value="card">
+                        <i class='bx bx-credit-card-front'></i>
+                        <span>Credit/Debit Card</span>
+                    </label>
+                    <label class="payment-method">
+                        <input type="radio" name="paymentMethod" value="netbanking">
+                        <i class='bx bxs-bank'></i>
+                        <span>Net Banking</span>
+                    </label>
+                    <label class="payment-method">
+                        <input type="radio" name="paymentMethod" value="cod">
+                        <i class='bx bx-money'></i>
+                        <span>Pay on Delivery</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Order Summary -->
+        <div class="checkout-sidebar">
+            <h2 style="font-size: 1.4rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem;">Order Summary</h2>
+            
+            <div id="carInfoBadge" class="car-info-badge" style="display: none;">
+                <i class='bx bx-car'></i> <span id="carInfoText">Toyota Innova</span>
+            </div>
+
+            <div id="checkoutCartItems">
+                <!-- Items will be injected here -->
+            </div>
+
+            <div class="summary-totals">
+                <div class="promo-code-container">
+                    <input type="text" id="promoCode" placeholder="Enter Promo Code">
+                    <button id="applyPromoBtn" class="secondary-btn" style="padding: 0.8rem 1.2rem; font-size: 0.9rem;">Apply</button>
+                </div>
+
+                <div class="summary-total-row">
+                    <span>Subtotal</span>
+                    <span id="summarySubtotal">₹0</span>
+                </div>
+                <div class="summary-total-row" id="discountRow" style="display: none; color: #22c55e;">
+                    <span>Discount</span>
+                    <span id="summaryDiscount">-₹0</span>
+                </div>
+                <div class="summary-total-row">
+                    <span>Taxes (18% GST)</span>
+                    <span id="summaryTax">₹0</span>
+                </div>
+                <div class="summary-total-row" id="paymentFeeRow" style="display: none;">
+                    <span class="fee-label">Payment Fee</span>
+                    <span class="fee-val">₹0</span>
+                </div>
+                <div class="summary-total-row final-total">
+                    <span>Total Amount</span>
+                    <span id="summaryTotal" style="color: var(--primary);">₹0</span>
+                </div>
+
+                <button id="confirmOrderBtn" class="primary-btn full-width" style="margin-top: 1rem; font-size: 1.1rem; padding: 1rem;">Confirm & Pay</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- UPI QR Code Modal Overlay -->
+    <div class="modal-overlay" id="upiModal">
+        <div class="modal-content" style="text-align: center; max-width: 400px; padding: 3rem 2rem;">
+            <h2>Scan to Pay <span id="upiScanAmount" style="color: var(--primary);"></span></h2>
+            <p style="color: var(--text-muted); margin-bottom: 2rem;">Please scan the QR code below using any UPI app.</p>
+            
+            <div style="background: white; padding: 1rem; border-radius: 12px; display: inline-block; margin-bottom: 2rem;">
+                <img id="upiQrCode" src="" alt="UPI QR Code" style="width: 200px; height: 200px; display: block;">
+            </div>
+
+            <div style="background: rgba(250, 204, 21, 0.1); border: 1px solid var(--primary); color: var(--text-main); padding: 1rem; border-radius: 8px;">
+                <i class='bx bx-timer' style="font-size: 1.5rem; color: var(--primary); vertical-align: middle;"></i>
+                <span style="font-size: 1.1rem; font-weight: 500; margin-left: 0.5rem;">Awaiting Payment... <span id="upiTimer" style="color: var(--primary); font-weight: bold;">10</span>s</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Net Banking Modal Overlay -->
+    <div class="modal-overlay" id="netbankingModal">
+        <div class="modal-content" style="max-width: 500px; padding: 2rem; position: relative;">
+            <button class="close-modal" id="closeNetbankingModal" style="position: absolute; right: 1.5rem; top: 1.5rem; background: none; border: none; font-size: 1.5rem; color: var(--text-muted); cursor: pointer;"><i class='bx bx-x'></i></button>
+            <h2 style="margin-bottom: 0.5rem; text-align: center;"><i class='bx bxs-bank' style="color: var(--primary);"></i> Select Your Bank</h2>
+            <p style="color: var(--text-muted); text-align: center; margin-bottom: 2rem;">Choose your preferred bank to proceed with the secure payment.</p>
+            
+            <div class="bank-list" style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem;">
+                <label style="display: flex; align-items: center; justify-content: space-between; padding: 1rem; border: 1px solid var(--border-color); border-radius: 8px; cursor: pointer; transition: all 0.3s ease;" class="bank-option">
+                    <span style="font-weight: 500; color: var(--text-main);"><i class='bx bxs-institution' style="color: var(--primary); margin-right: 0.5rem;"></i> HDFC Bank</span>
+                    <input type="radio" name="bankSelection" value="HDFC">
+                </label>
+                <label style="display: flex; align-items: center; justify-content: space-between; padding: 1rem; border: 1px solid var(--border-color); border-radius: 8px; cursor: pointer; transition: all 0.3s ease;" class="bank-option">
+                    <span style="font-weight: 500; color: var(--text-main);"><i class='bx bxs-institution' style="color: var(--primary); margin-right: 0.5rem;"></i> State Bank of India (SBI)</span>
+                    <input type="radio" name="bankSelection" value="SBI">
+                </label>
+                <label style="display: flex; align-items: center; justify-content: space-between; padding: 1rem; border: 1px solid var(--border-color); border-radius: 8px; cursor: pointer; transition: all 0.3s ease;" class="bank-option">
+                    <span style="font-weight: 500; color: var(--text-main);"><i class='bx bxs-institution' style="color: var(--primary); margin-right: 0.5rem;"></i> ICICI Bank</span>
+                    <input type="radio" name="bankSelection" value="ICICI">
+                </label>
+                <label style="display: flex; align-items: center; justify-content: space-between; padding: 1rem; border: 1px solid var(--border-color); border-radius: 8px; cursor: pointer; transition: all 0.3s ease;" class="bank-option">
+                    <span style="font-weight: 500; color: var(--text-main);"><i class='bx bxs-institution' style="color: var(--primary); margin-right: 0.5rem;"></i> Axis Bank</span>
+                    <input type="radio" name="bankSelection" value="Axis">
+                </label>
+            </div>
+
+            <button id="proceedToBankBtn" class="primary-btn full-width" style="display: none;">Confirm & Pay</button>
+        </div>
+    </div>
+
+    <!-- Net Banking Phone Modal Overlay -->
+    <div class="modal-overlay" id="netbankingPhoneModal">
+        <div class="modal-content" style="max-width: 400px; padding: 2rem; position: relative; text-align: center;">
+            <button class="close-modal" id="closeNbPhoneModal" style="position: absolute; right: 1.5rem; top: 1.5rem; background: none; border: none; font-size: 1.5rem; color: var(--text-muted); cursor: pointer;"><i class='bx bx-x'></i></button>
+            <h2 style="margin-bottom: 0.5rem;"><i class='bx bx-phone' style="color: var(--primary);"></i> Payer Details</h2>
+            <p style="color: var(--text-muted); margin-bottom: 2rem;">Please enter the mobile number registered with your bank.</p>
+            
+            <div class="form-group" style="text-align: left;">
+                <label>Registered Mobile Number</label>
+                <input type="tel" id="nbPayerPhone" placeholder="10-digit mobile number" maxlength="10" style="width: 100%; padding: 0.8rem 1rem; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-main); margin-bottom: 1.5rem;" required>
+            </div>
+
+            <button id="confirmNbPaymentBtn" class="primary-btn full-width">Confirm Payment</button>
+        </div>
+    </div>
+
+    <!-- Success Modal Overlay -->
+    <div class="modal-overlay" id="successModal">
+        <div class="modal-content" style="text-align: center; max-width: 500px; padding: 3rem 2rem;">
+            <i class='bx bxs-check-circle' style="font-size: 5rem; color: #22c55e; margin-bottom: 1.5rem;"></i>
+            <h2 style="margin-bottom: 1rem;">Order Confirmed!</h2>
+            <p style="color: var(--text-muted); margin-bottom: 2rem;">Thank you for choosing DriveHub. Your order has been placed successfully and you will receive a confirmation message shortly.</p>
+            <button class="primary-btn full-width" onclick="window.location.href='index.html';">Return to Home</button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // Handle Payment Method Selection Styling & Fee Calculation
+            const paymentMethods = document.querySelectorAll('.payment-method');
+            paymentMethods.forEach(method => {
+                method.addEventListener('change', (e) => {
+                    paymentMethods.forEach(m => m.classList.remove('active'));
+                    e.target.closest('.payment-method').classList.add('active');
+                    updateTotals();
+                });
+            });
+
+            // Load Cart Data
+            let cartItems = [];
+            let carInfo = null;
+            try {
+                const storedCart = localStorage.getItem('drivehub_cart');
+                if (storedCart) cartItems = JSON.parse(storedCart);
+                
+                const storedCar = localStorage.getItem('drivehub_car');
+                if (storedCar) carInfo = JSON.parse(storedCar);
+            } catch(e) { console.error('Error loading cart data', e); }
+
+            // Display Car Info if available
+            if (carInfo && carInfo.brand && carInfo.model) {
+                const badge = document.getElementById('carInfoBadge');
+                const text = document.getElementById('carInfoText');
+                badge.style.display = 'inline-flex';
+                let txt = `${carInfo.brand} ${carInfo.model}`;
+                if (carInfo.fuel) txt += ` (${carInfo.fuel.toUpperCase()})`;
+                text.innerText = txt;
+            }
+
+            // Display Cart Items & Calculate Totals
+            const cartContainer = document.getElementById('checkoutCartItems');
+            let subtotal = 0;
+            let discount = 0;
+            
+            if (cartItems.length === 0) {
+                cartContainer.innerHTML = '<p style="color: var(--text-muted); text-align: center; margin-bottom: 2rem;">Your cart is empty.</p>';
+            } else {
+                let html = '';
+                cartItems.forEach(item => {
+                    subtotal += item.price;
+                    html += `
+                        <div class="summary-item">
+                            <div>
+                                <div style="font-weight: 500; color: var(--text-main); margin-bottom: 0.2rem;">${item.name}</div>
+                                <div style="font-size: 0.8rem; color: var(--text-muted);">Qty: 1</div>
+                            </div>
+                            <div style="font-weight: 600; color: var(--primary);">${item.priceStr}</div>
+                        </div>
+                    `;
+                });
+                cartContainer.innerHTML = html;
+            }
+
+            function formatIndianNumber(num) {
+                if (isNaN(num)) return num;
+                return new Intl.NumberFormat('en-IN').format(Math.round(num));
+            }
+
+            function updateTotals() {
+                const selectedMethod = document.querySelector('input[name="paymentMethod"]:checked');
+                let paymentFee = 0;
+                let feeLabel = '';
+
+                if (selectedMethod) {
+                    const methodVal = selectedMethod.value;
+                    if (methodVal === 'upi') {
+                        paymentFee = 10; // Flat convenience fee for UPI
+                        feeLabel = 'UPI Convenience Fee';
+                    } else if (methodVal === 'card') {
+                        paymentFee = Math.round(subtotal * 0.02); // 2% gateway processing fee
+                        feeLabel = 'Card Processing Fee (2%)';
+                    } else if (methodVal === 'netbanking') {
+                        paymentFee = 25; // Flat rate for net banking
+                        feeLabel = 'Net Banking Fee';
+                    } else if (methodVal === 'cod') {
+                        paymentFee = 50; // COD collection charge
+                        feeLabel = 'Pay on Delivery Charge';
+                    }
+                }
+
+                const tax = Math.round((subtotal - discount) * 0.18);
+                const total = Math.round(subtotal - discount + tax + paymentFee);
+                
+                document.getElementById('summarySubtotal').innerText = '₹' + formatIndianNumber(subtotal);
+                document.getElementById('summaryTax').innerText = '₹' + formatIndianNumber(tax);
+                document.getElementById('summaryTotal').innerText = '₹' + formatIndianNumber(total);
+                
+                const feeRow = document.getElementById('paymentFeeRow');
+                if (paymentFee > 0) {
+                    feeRow.style.display = 'flex';
+                    feeRow.querySelector('.fee-label').innerText = feeLabel;
+                    feeRow.querySelector('.fee-val').innerText = '₹' + formatIndianNumber(paymentFee);
+                } else {
+                    feeRow.style.display = 'none';
+                }
+                
+                const discRow = document.getElementById('discountRow');
+                if (discount > 0) {
+                    discRow.style.display = 'flex';
+                    document.getElementById('summaryDiscount').innerText = '-₹' + formatIndianNumber(discount);
+                } else {
+                    discRow.style.display = 'none';
+                }
+            }
+
+            updateTotals();
+
+            // Promo Code Logic
+            const applyBtn = document.getElementById('applyPromoBtn');
+            const promoInput = document.getElementById('promoCode');
+            applyBtn.addEventListener('click', () => {
+                const code = promoInput.value.trim().toUpperCase();
+                if (code === 'DRIVE10') {
+                    discount = Math.round(subtotal * 0.10);
+                    alert('Promo code applied! You got 10% off.');
+                } else if (code === 'FLAT500') {
+                    discount = 500;
+                    alert('Promo code applied! ₹500 off.');
+                } else {
+                    discount = 0;
+                    if(code !== '') alert('Invalid or expired promo code.');
+                }
+                updateTotals();
+            });
+
+            // Confirm Order
+            const confirmBtn = document.getElementById('confirmOrderBtn');
+            const successModal = document.getElementById('successModal');
+            
+            confirmBtn.addEventListener('click', async () => {
+                if(cartItems.length === 0) {
+                    alert('Your cart is empty. Please add items before checking out.');
+                    return;
+                }
+                
+                // Basic Validation
+                const reqIds = ['custName', 'custPhone', 'addrLine1', 'addrCity', 'addrPin'];
+                let isValid = true;
+                reqIds.forEach(id => {
+                    if (!document.getElementById(id).value.trim()) {
+                        document.getElementById(id).style.borderColor = 'var(--danger)';
+                        isValid = false;
+                    } else {
+                        document.getElementById(id).style.borderColor = 'var(--border-color)';
+                    }
+                });
+
+                if (!isValid) {
+                    alert('Please fill in all required fields.');
+                    return;
+                }
+
+                // Get Payment Info
+                const totalText = document.getElementById('summaryTotal').innerText;
+                const methodRadio = document.querySelector('input[name="paymentMethod"]:checked');
+                let methodDisplay = 'Unknown';
+                if (methodRadio) {
+                    const val = methodRadio.value;
+                    if(val === 'upi') methodDisplay = 'UPI';
+                    if(val === 'card') methodDisplay = 'Credit/Debit Card';
+                    if(val === 'netbanking') methodDisplay = 'Net Banking';
+                    if(val === 'cod') methodDisplay = 'Cash on Delivery';
+                }
+
+                // Show processing state
+                confirmBtn.innerText = 'Processing...';
+                confirmBtn.style.opacity = '0.7';
+                confirmBtn.style.pointerEvents = 'none';
+
+                // Save order details to localStorage
+                localStorage.setItem('drivehub_order', JSON.stringify({
+                    total: totalText,
+                    method: methodDisplay
+                }));
+                
+                // Save to Excel Database via Backend
+                try {
+                    await fetch('/api/bookings', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            name: document.getElementById('custName').value.trim(),
+                            phone: document.getElementById('custPhone').value.trim(),
+                            email: document.getElementById('custEmail') ? document.getElementById('custEmail').value.trim() : '',
+                            city: document.getElementById('addrCity').value.trim(),
+                            pin: document.getElementById('addrPin').value.trim(),
+                            paymentMethod: methodDisplay,
+                            carBrand: carInfo ? carInfo.brand : '',
+                            carModel: carInfo ? carInfo.model : '',
+                            carFuel: carInfo ? carInfo.fuel : '',
+                            totalAmount: totalText
+                        })
+                    });
+                } catch (e) {
+                    console.error('Failed to save booking to Excel', e);
+                }
+
+                // Clear Cart
+                localStorage.removeItem('drivehub_cart');
+
+                if (methodDisplay === 'UPI') {
+                    // Show UPI QA Flow with 10s Timer
+                    const upiModal = document.getElementById('upiModal');
+                    const amtStr = totalText.replace(/[^0-9]/g, ''); // Extract digits
+                    document.getElementById('upiScanAmount').innerText = totalText;
+                    
+                    // Generate dummy dynamic QR code using public API using extracted amount
+                    document.getElementById('upiQrCode').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=drivehub@ybl&pn=DriveHub&am=${amtStr}`;
+                    
+                    upiModal.style.display = 'flex';
+                    upiModal.style.alignItems = 'center';
+                    upiModal.style.justifyContent = 'center';
+
+                    let timeLeft = 10;
+                    const timerSpan = document.getElementById('upiTimer');
+                    timerSpan.innerText = timeLeft;
+
+                    const intervalId = setInterval(() => {
+                        timeLeft--;
+                        timerSpan.innerText = timeLeft;
+                        if (timeLeft <= 0) {
+                            clearInterval(intervalId);
+                            timerSpan.parentElement.innerHTML = `<i class='bx bxs-check-circle' style="font-size: 1.5rem; color: #22c55e; vertical-align: middle;"></i><span style="font-size: 1.1rem; font-weight: 500; margin-left: 0.5rem; color: #22c55e;">Payment Verified!</span>`;
+                            
+                            setTimeout(() => {
+                                window.location.href = 'payment-success.html';
+                            }, 1000); // 1 extra second for user to read success
+                        }
+                    }, 1000);
+
+                } else if (methodDisplay === 'Net Banking') {
+                    const nbModal = document.getElementById('netbankingModal');
+                    nbModal.style.display = 'flex';
+                    nbModal.style.alignItems = 'center';
+                    nbModal.style.justifyContent = 'center';
+
+                } else {
+                    // Wait 2.5 seconds, then redirect for other methods
+                    setTimeout(() => {
+                        window.location.href = 'payment-success.html';
+                    }, 2500);
+                }
+            });
+
+            // Net Banking Modal Event Listeners
+            const closeNbModal = document.getElementById('closeNetbankingModal');
+            if (closeNbModal) {
+                closeNbModal.addEventListener('click', () => {
+                    document.getElementById('netbankingModal').style.display = 'none';
+                    confirmBtn.innerText = 'Confirm & Pay';
+                    confirmBtn.style.opacity = '1';
+                    confirmBtn.style.pointerEvents = 'auto';
+                });
+            }
+
+            const bankRadios = document.querySelectorAll('input[name="bankSelection"]');
+            const proceedBtn = document.getElementById('proceedToBankBtn');
+            bankRadios.forEach(radio => {
+                radio.addEventListener('change', () => {
+                    proceedBtn.style.display = 'block';
+                    document.querySelectorAll('.bank-option').forEach(opt => {
+                        opt.style.borderColor = 'var(--border-color)';
+                        opt.style.background = 'transparent';
+                    });
+                    if (radio.checked) {
+                        radio.closest('.bank-option').style.borderColor = 'var(--primary)';
+                        radio.closest('.bank-option').style.background = 'rgba(250, 204, 21, 0.05)';
+                    }
+                });
+            });
+
+            proceedBtn.addEventListener('click', () => {
+                const selectedBank = document.querySelector('input[name="bankSelection"]:checked');
+                if (selectedBank) {
+                    localStorage.setItem('drivehub_bank', selectedBank.value);
+                    document.getElementById('netbankingModal').style.display = 'none';
+                    const nbPhoneModal = document.getElementById('netbankingPhoneModal');
+                    if (nbPhoneModal) {
+                        nbPhoneModal.style.display = 'flex';
+                        nbPhoneModal.style.alignItems = 'center';
+                        nbPhoneModal.style.justifyContent = 'center';
+                    }
+                }
+            });
+
+            const confirmNbPaymentBtn = document.getElementById('confirmNbPaymentBtn');
+            const nbPayerPhone = document.getElementById('nbPayerPhone');
+            
+            if (nbPayerPhone) {
+                nbPayerPhone.addEventListener('input', (e) => {
+                    e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                    e.target.style.borderColor = 'var(--border-color)';
+                });
+            }
+
+            if (confirmNbPaymentBtn) {
+                confirmNbPaymentBtn.addEventListener('click', () => {
+                    if (nbPayerPhone && nbPayerPhone.value.trim().length === 10) {
+                        confirmNbPaymentBtn.innerText = 'Redirecting...';
+                        confirmNbPaymentBtn.style.opacity = '0.7';
+                        confirmNbPaymentBtn.style.pointerEvents = 'none';
+                        setTimeout(() => {
+                            window.location.href = 'bank-redirect.html';
+                        }, 500);
+                    } else {
+                        alert('Please enter a valid 10-digit mobile number.');
+                        if(nbPayerPhone) nbPayerPhone.style.borderColor = 'var(--danger)';
+                    }
+                });
+            }
+
+            const closeNbPhoneModal = document.getElementById('closeNbPhoneModal');
+            if (closeNbPhoneModal) {
+                closeNbPhoneModal.addEventListener('click', () => {
+                    document.getElementById('netbankingPhoneModal').style.display = 'none';
+                    const confirmBtnMain = document.getElementById('confirmOrderBtn');
+                    if(confirmBtnMain) {
+                        confirmBtnMain.innerText = 'Confirm & Pay';
+                        confirmBtnMain.style.opacity = '1';
+                        confirmBtnMain.style.pointerEvents = 'auto';
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

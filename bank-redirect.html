@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Payment Portal - DriveHub</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background: #000000;
+            color: #ffffff;
+            font-family: inherit;
+        }
+
+        .bank-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .bank-logo {
+            font-size: 4rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(250, 204, 21, 0.3);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 2rem auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .status-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .sub-text {
+            color: #a0aec0;
+            margin-bottom: 2rem;
+        }
+
+        .timer-box {
+            background: #1a202c;
+            border: 1px solid #2d3748;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 1.2rem;
+            color: #e2e8f0;
+        }
+        
+        .timer-box span {
+            font-weight: bold;
+            color: var(--primary, #facc15);
+        }
+
+        .secure-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #16a34a;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bank-container">
+        <i class='bx bxs-bank bank-logo' id="displayBankIcon"></i>
+        <h2 id="displayBankName" style="margin-bottom: 0.5rem;">Secure Bank Portal</h2>
+        
+        <div class="spinner"></div>
+        
+        <div class="status-text" id="statusHeader">Authenticating Transaction...</div>
+        <p class="sub-text">Please do not refresh this page or press back.</p>
+
+        <div class="timer-box">
+            Redirecting in <span id="bankTimer">10</span>s
+        </div>
+
+        <div class="secure-badge">
+            <i class='bx bxs-lock-alt'></i> 256-bit Secure Connection
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const storedBank = localStorage.getItem('drivehub_bank');
+            if (storedBank) {
+                document.getElementById('displayBankName').innerText = storedBank + ' Net Banking';
+            }
+
+            let timeLeft = 10;
+            const timerEl = document.getElementById('bankTimer');
+            const statusEl = document.getElementById('statusHeader');
+
+            const interval = setInterval(() => {
+                timeLeft--;
+                timerEl.innerText = timeLeft;
+                
+                if (timeLeft === 6) {
+                    statusEl.innerText = "Processing Payment...";
+                } else if (timeLeft === 2) {
+                    statusEl.innerText = "Payment Successful! Completing...";
+                    statusEl.style.color = "#16a34a";
+                }
+
+                if (timeLeft <= 0) {
+                    clearInterval(interval);
+                    window.location.href = 'payment-success.html';
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

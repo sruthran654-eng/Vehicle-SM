@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DriveHub | Vehicle Service Management</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Boxicons for modern icons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
+
+    <meta name="description" content="Premium Vehicle Service Management System">
+</head>
+
+<body>
+    <!-- Top Navbar -->
+    <nav class="top-navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <div class="logo-area">
+                    <div class="logo-icon"><i class='bx bx-car'></i></div>
+                    <span class="logo-text">DriveHub</span>
+                </div>
+            </div>
+
+            <!-- Removed Search Bar -->
+
+            <div class="nav-right">
+                <div class="nav-dropdown">
+                    <a href="#" class="nav-link">More <i class='bx bx-chevron-down'></i></a>
+                    <div class="dropdown-content">
+                        <a href="contact.html">ContactUs</a>
+                        <a href="offers.html">Offers</a>
+                        <a href="reviews.html">Reviews</a>
+                        <a href="about.html">About Us</a>
+                        <a href="faqs.html">FAQs</a>
+                    </div>
+                </div>
+                <button class="primary-btn">Login</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero-section">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1>The Best Car Service Starts Here</h1>
+                <p>Experience hassle-free car maintenance with transparent pricing.</p>
+                <div class="benefits">
+                    <span><i class='bx bx-check-circle'></i> Genuine Parts</span>
+                    <span><i class='bx bx-check-circle'></i> Expert Mechanics</span>
+                    <span><i class='bx bx-check-circle'></i> Free Pick-up & Drop</span>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="hero-right-column"
+                style="display: flex; flex-direction: column; gap: 1rem; width: 100%; max-width: 400px; z-index: 10;">
+                <!-- Widget Container -->
+                <div class="car-selector-widget glass-card" id="mainWidgetContainer">
+
+                    <!-- Location Step -->
+                    <div id="locationStepContainer">
+                        <div
+                            style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.3rem;">
+                            <h2>Select Location</h2>
+                            <i class='bx bx-current-location' style="font-size: 1.5rem; color: var(--primary);"></i>
+                        </div>
+                        <p>Choose your state and district.</p>
+                        <form id="widgetLocationForm">
+                            <div class="form-group">
+                                <label>State</label>
+                                <div class="custom-select">
+                                    <select id="widgetStateSelect" required>
+                                        <option value="" disabled selected>Select State</option>
+                                    </select>
+                                    <i class='bx bx-chevron-down select-icon'></i>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>District <i class='bx bx-loader bx-spin loader-icon' id="widgetDistrictLoader"
+                                        style="display:none;"></i></label>
+                                <div class="custom-select">
+                                    <select id="widgetDistrictSelect" required disabled>
+                                        <option value="" disabled selected>Select District</option>
+                                    </select>
+                                    <i class='bx bx-chevron-down select-icon'></i>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Phone Number</label>
+                                <div class="phone-input-group">
+                                    <div class="custom-select country-code" style="flex: 0 0 110px;">
+                                        <select id="widgetCountryCode">
+                                            <option value="+91">+91 (IND)</option>
+                                        </select>
+                                        <i class='bx bx-chevron-down select-icon'></i>
+                                    </div>
+                                    <input type="tel" id="widgetPhoneInput" placeholder="Enter Mobile Number"
+                                        maxlength="10" required autocomplete="off" autocorrect="off"
+                                        autocapitalize="off" spellcheck="false"
+                                        style="flex: 1; background: var(--bg-white); border: 1px solid var(--border-color); border-radius: 8px; padding: 0.8rem 1rem; color: var(--text-main); font-family: inherit; font-size: 0.95rem; outline: none;">
+                                </div>
+                            </div>
+
+                            <button type="submit" class="primary-btn full-width" id="widgetConfirmLocationBtn" disabled>
+                                Save Location
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Car Selection Step -->
+                    <div id="carStepContainer" style="display: none;">
+                        <div
+                            style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.3rem;">
+                            <h2>Select Your Car</h2>
+                            <div id="currentLocationDisplay" title="Change Location"
+                                style="font-size: 0.85rem; color: var(--primary); display: flex; align-items: center; gap: 4px; cursor: pointer;">
+                                <i class='bx bx-map'></i> <span id="currentLocationText">New Delhi</span>
+                            </div>
+                        </div>
+                        <p>Get accurate pricing for your vehicle.</p>
+
+                        <form id="carSelectorForm">
+                            <div class="form-group">
+                                <label>Brand</label>
+                                <div class="custom-select">
+                                    <select id="heroBrand" required>
+                                        <option value="" disabled selected>Select Brand</option>
+                                        <option value="Toyota">Toyota</option>
+                                        <option value="Maruti Suzuki">Maruti Suzuki</option>
+                                        <option value="BMW">BMW</option>
+                                        <option value="Tata Motors">Tata Motors</option>
+                                        <option value="Kia">Kia</option>
+                                        <option value="Volkswagen">Volkswagen</option>
+                                        <option value="Honda">Honda</option>
+                                        <option value="Hyundai">Hyundai</option>
+                                    </select>
+                                    <i class='bx bx-chevron-down select-icon'></i>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Model <i class='bx bx-loader bx-spin' id="heroModelLoader"
+                                        style="display:none; color: var(--primary);"></i></label>
+                                <div class="custom-select">
+                                    <select id="heroModel" required disabled>
+                                        <option value="" disabled selected>Select Model</option>
+                                    </select>
+                                    <i class='bx bx-chevron-down select-icon'></i>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Fuel Type <i class='bx bx-loader bx-spin' id="heroFuelLoader"
+                                        style="display:none; color: var(--primary);"></i></label>
+                                <div class="custom-select">
+                                    <select id="heroFuel" required disabled>
+                                        <option value="" disabled selected>Select Fuel Type</option>
+                                    </select>
+                                    <i class='bx bx-chevron-down select-icon'></i>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="primary-btn full-width" id="checkPricesBtn" disabled>
+                                Check Prices
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Stats Under Widget -->
+                <div class="hero-stats-container glass-card">
+                    <div class="hero-stat-box">
+                        <div class="hero-stat-value green-text"><i class='bx bxs-star'></i> 4.0<span>/5</span></div>
+                        <div class="hero-stat-label">Based on 1,50,000+<br>Reviews</div>
+                    </div>
+                    <div class="hero-stat-divider"></div>
+                    <div class="hero-stat-box">
+                        <div class="hero-stat-value navy-text">20 Lakh+</div>
+                        <div class="hero-stat-label">Happy<br>Customers</div>
+                    </div>
+                </div>
+            </div> <!-- End Right Column -->
+
+        </div>
+    </header>
+
+    <!-- Services & Spare Parts Horizontal Slider -->
+    <div id="sectionsViewport" style="overflow: hidden; width: 100%; display: none;">
+        <div id="sectionsSlider" style="display: flex; align-items: flex-start; transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1), height 0.6s cubic-bezier(0.165, 0.84, 0.44, 1); width: 200%;">
+            <!-- Our Services Section -->
+            <section class="services-section" style="width: 50%; flex-shrink: 0; position: relative;">
+                <button id="goToSpareParts" class="nav-arrow-btn right-arrow" title="Next: Spare Parts">
+                    <i class='bx bx-chevron-right'></i>
+                </button>
+        <div class="section-container">
+            <div style="display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 2rem;">
+                <h2 class="section-title" style="margin-bottom: 0;">Our Services</h2>
+                <div id="selectedCarInfo"
+                    style="display: none; padding: 0.5rem 1rem; background: var(--primary-light); color: var(--primary); border-radius: 50px; font-weight: 600; font-size: 0.9rem; align-items: center; gap: 8px;">
+                    <i class='bx bx-check-circle'></i> Prices for <span id="selectedCarNameDisplay">Toyota Innova</span>
+                </div>
+            </div>
+            <div class="services-grid">
+                <!-- Service 1 -->
+                <div class="service-card" data-service="service">
+                    <div class="service-icon"><i class='bx bx-car'></i></div>
+                    <h3>Car Service</h3>
+                    <p>Routine maintenance to keep your car running smooth.</p>
+                    <div class="service-starting-price"
+                        style="display: none; font-size: 0.85rem; color: var(--primary); font-weight: 600; margin-top: 0.5rem;">
+                        Starting from <span class="price-val">₹0</span></div>
+                </div>
+                <!-- Service 2 -->
+                <div class="service-card" data-service="ac">
+                    <div class="service-icon"><i class='bx bx-wind'></i></div>
+                    <h3>AC Service & Repair</h3>
+                    <p>Comprehensive AC cooling and cleaning services.</p>
+                    <div class="service-starting-price"
+                        style="display: none; font-size: 0.85rem; color: var(--primary); font-weight: 600; margin-top: 0.5rem;">
+                        Starting from <span class="price-val">₹0</span></div>
+                </div>
+                <!-- Service 3 -->
+                <div class="service-card" data-service="battery">
+                    <div class="service-icon"><i class='bx bxs-car-battery'></i></div>
+                    <h3>Batteries</h3>
+                    <p>Replacement and checkup for long-lasting batteries.</p>
+                    <div class="service-starting-price"
+                        style="display: none; font-size: 0.85rem; color: var(--primary); font-weight: 600; margin-top: 0.5rem;">
+                        Starting from <span class="price-val">₹0</span></div>
+                </div>
+                <!-- Service 4 -->
+                <div class="service-card" data-service="tyre">
+                    <div class="service-icon"><i class='bx bx-disc'></i></div>
+                    <h3>Tyres and Wheel Care</h3>
+                    <p>Alignment, balancing, and tyre replacement.</p>
+                    <div class="service-starting-price"
+                        style="display: none; font-size: 0.85rem; color: var(--primary); font-weight: 600; margin-top: 0.5rem;">
+                        Starting from <span class="price-val">₹0</span></div>
+                </div>
+                <!-- Service 5 -->
+                <div class="service-card" data-service="dent">
+                    <div class="service-icon"><i class='bx bx-spray-can'></i></div>
+                    <h3>Denting & Painting</h3>
+                    <p>Remove scratches and dents with premium painting.</p>
+                    <div class="service-starting-price"
+                        style="display: none; font-size: 0.85rem; color: var(--primary); font-weight: 600; margin-top: 0.5rem;">
+                        Starting from <span class="price-val">₹0</span></div>
+                </div>
+                <!-- Service 6 -->
+                <div class="service-card" data-service="windshield">
+                    <div class="service-icon"><i class='bx bx-window-alt'></i></div>
+                    <h3>Windshield & Lights</h3>
+                    <p>Glass replacement and headlight restoration.</p>
+                    <div class="service-starting-price"
+                        style="display: none; font-size: 0.85rem; color: var(--primary); font-weight: 600; margin-top: 0.5rem;">
+                        Starting from <span class="price-val">₹0</span></div>
+                </div>
+                <!-- Service 7 -->
+                <div class="service-card" data-service="suspension">
+                    <div class="service-icon"><i class='bx bx-slider'></i></div>
+                    <h3>Suspension</h3>
+                    <p>Shock absorbers and complete suspension care.</p>
+                    <div class="service-starting-price"
+                        style="display: none; font-size: 0.85rem; color: var(--primary); font-weight: 600; margin-top: 0.5rem;">
+                        Starting from <span class="price-val">₹0</span></div>
+                </div>
+                <!-- Service 8 -->
+                <div class="service-card" data-service="clutch">
+                    <div class="service-icon"><i class='bx bx-cog'></i></div>
+                    <h3>Clutch and Body Parts</h3>
+                    <p>Clutch overhaul and genuine body part replacement.</p>
+                    <div class="service-starting-price"
+                        style="display: none; font-size: 0.85rem; color: var(--primary); font-weight: 600; margin-top: 0.5rem;">
+                        Starting from <span class="price-val">₹0</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+            <!-- Spare Parts Section -->
+            <section class="services-section spare-parts-section" style="width: 50%; flex-shrink: 0; position: relative;">
+        <div class="section-container">
+            <div style="display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 2rem;">
+                <h2 class="section-title" style="margin-bottom: 0;">Spare Parts</h2>
+            </div>
+            <div class="spare-parts-layout">
+                <div class="vertical-list-grid" id="sparePartsGrid">
+                    <!-- Spare parts will be dynamically populated here -->
+                    <div style="width: 100%; text-align: center; color: var(--text-muted); padding: 3rem;">
+                        <i class='bx bx-info-circle' style="font-size: 3rem; margin-bottom: 1rem; display: block;"></i>
+                        <p>Select your vehicle details above to see spare parts and pricing.</p>
+                    </div>
+                </div>
+                
+                <div class="spare-parts-cart-panel" id="sparePartsCartPanel" style="display: none;">
+                    <div class="cart-header">
+                        <h3>Cart Summary</h3>
+                        <span id="cartItemCount" class="cart-badge">0</span>
+                    </div>
+                    <div id="cartItemsList" class="cart-items-list">
+                        <!-- Items populated via JS -->
+                    </div>
+                    <div class="cart-total-row">
+                        <span>Total Estimate:</span>
+                        <span id="cartTotalPrice" class="total-price-val">₹0</span>
+                    </div>
+                    <div id="cartActionButtons" style="display: none; align-items: center; gap: 0.8rem; margin-top: 1.5rem;">
+                        <button id="clearCartBtn" class="secondary-btn" style="flex: 1; padding: 0.8rem 0; font-size: 0.95rem; color: #000; border-color: #000;">Clear All</button>
+                        <button id="bulkAddToCartBtn" class="primary-btn" style="flex: 2; padding: 0.8rem 0; font-size: 0.95rem;">Checkout</button>
+                    </div>
+                </div>
+            </div>
+
+            <button id="goToServices" class="nav-arrow-btn left-arrow" title="Back: Our Services">
+                <i class='bx bx-chevron-left'></i>
+            </button>
+        </div>
+    </section>
+    </div>
+    </div>
+
+    <!-- Car Service Packages Modal -->
+    <div class="modal-overlay" id="carServiceModal">
+        <div class="modal-content" style="max-width: 1100px; padding: 2rem;">
+            <button class="close-modal" id="closeCarServiceModal"><i class='bx bx-x'></i></button>
+            <div class="modal-header" style="text-align: center;">
+                <h2>Scheduled Service Packages</h2>
+                <p>Choose the best package for your car</p>
+            </div>
+            <div class="packages-grid">
+                <!-- Package 1: Basic Service -->
+                <div class="package-card">
+                    <div class="package-header">
+                        <h3>Basic Service</h3>
+                        <div class="package-price">₹3,019</div>
+                    </div>
+                    <ul class="package-features">
+                        <li><i class='bx bx-check-circle'></i> Engine Oil Replacement</li>
+                        <li><i class='bx bx-check-circle'></i> Oil Filter Replacement</li>
+                        <li><i class='bx bx-check-circle'></i> Air Filter Cleaning</li>
+                        <li><i class='bx bx-check-circle'></i> Coolant Top-up</li>
+                        <li><i class='bx bx-check-circle'></i> Wiper Fluid Replacement</li>
+                        <li><i class='bx bx-check-circle'></i> Car Wash</li>
+                    </ul>
+                    <button class="primary-btn full-width mt-1">Book Now</button>
+                </div>
+
+                <!-- Package 2: Standard Service -->
+                <div class="package-card popular-package">
+                    <div class="popular-badge">Most Popular</div>
+                    <div class="package-header">
+                        <h3>Standard Service</h3>
+                        <div class="package-price">₹3,419</div>
+                    </div>
+                    <ul class="package-features">
+                        <li><i class='bx bx-check-circle'></i> All Basic Inclusions</li>
+                        <li><i class='bx bx-check-circle'></i> Air Filter Replacement</li>
+                        <li><i class='bx bx-check-circle'></i> Fuel Filter Checking</li>
+                        <li><i class='bx bx-check-circle'></i> Spark Plug Checking</li>
+                        <li><i class='bx bx-check-circle'></i> Brake Pads Cleaning</li>
+                        <li><i class='bx bx-check-circle'></i> Car Scanning</li>
+                    </ul>
+                    <button class="primary-btn full-width mt-1">Book Now</button>
+                </div>
+
+                <!-- Package 3: Comprehensive Service -->
+                <div class="package-card">
+                    <div class="package-header">
+                        <h3>Comprehensive Service</h3>
+                        <div class="package-price">₹5,469</div>
+                    </div>
+                    <ul class="package-features">
+                        <li><i class='bx bx-check-circle'></i> All Standard Inclusions</li>
+                        <li><i class='bx bx-check-circle'></i> Engine Flush</li>
+                        <li><i class='bx bx-check-circle'></i> Wheel Alignment</li>
+                        <li><i class='bx bx-check-circle'></i> Wheel Balancing</li>
+                        <li><i class='bx bx-check-circle'></i> Throttle Body Cleaning</li>
+                        <li><i class='bx bx-check-circle'></i> AC Filter Cleaning</li>
+                    </ul>
+                    <button class="primary-btn full-width mt-1">Book Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AC Service Packages Modal -->
+    <div class="modal-overlay" id="acServiceModal">
+        <div class="modal-content" style="max-width: 800px; padding: 2rem;">
+            <button class="close-modal" id="closeAcServiceModal"><i class='bx bx-x'></i></button>
+            <div class="modal-header" style="text-align: center;">
+                <h2>AC Service & Repair Packages</h2>
+                <p>Ensure optimal cooling with our expert AC services</p>
+            </div>
+            <div class="packages-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+                <!-- Package 1: Regular AC Service -->
+                <div class="package-card">
+                    <div class="package-header">
+                        <h3>Regular AC Service</h3>
+                        <div class="package-price">₹1,949</div>
+                    </div>
+                    <ul class="package-features">
+                        <li><i class='bx bx-check-circle'></i> AC Gas Top-up</li>
+                        <li><i class='bx bx-check-circle'></i> Condenser Cleaning</li>
+                        <li><i class='bx bx-check-circle'></i> AC Filter Cleaning</li>
+                        <li><i class='bx bx-check-circle'></i> AC Vent Cleaning</li>
+                    </ul>
+                    <button class="primary-btn full-width mt-1">Book Now</button>
+                </div>
+
+                <!-- Package 2: High-Performance AC Service -->
+                <div class="package-card popular-package">
+                    <div class="popular-badge">High Perf</div>
+                    <div class="package-header">
+                        <h3>High-Performance AC</h3>
+                        <div class="package-price">₹3,399</div>
+                    </div>
+                    <ul class="package-features">
+                        <li><i class='bx bx-check-circle'></i> Complete AC Gas Filling</li>
+                        <li><i class='bx bx-check-circle'></i> Compressor Oil Top-up</li>
+                        <li><i class='bx bx-check-circle'></i> Cooling Coil Cleaning</li>
+                        <li><i class='bx bx-check-circle'></i> AC Cabin Cleaning</li>
+                        <li><i class='bx bx-check-circle'></i> Condenser Pressure Cleaning</li>
+                    </ul>
+                    <button class="primary-btn full-width mt-1">Book Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Batteries Packages Modal -->
+    <div class="modal-overlay" id="batteryServiceModal">
+        <div class="modal-content" style="max-width: 1100px; padding: 2rem;">
+            <button class="close-modal" id="closeBatteryServiceModal"><i class='bx bx-x'></i></button>
+            <div class="modal-header" style="text-align: center;">
+                <h2>Amaron Battery Replacement</h2>
+                <p>100% Genuine Amaron Batteries with Free Installation</p>
+            </div>
+            <div class="packages-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+                <!-- Package 1: Amaron Black -->
+                <div class="package-card">
+                    <div class="package-header">
+                        <h3>Amaron Black</h3>
+                        <div class="package-price">₹3,200</div>
+                    </div>
+                    <ul class="package-features">
+                        <li><i class='bx bx-check-circle'></i> 100% Genuine Amaron</li>
+                        <li><i class='bx bx-check-circle'></i> 24 Months Warranty</li>
+                        <li><i class='bx bx-check-circle'></i> Free Installation</li>
+                        <li><i class='bx bx-check-circle'></i> Old Battery Exchange</li>
+                    </ul>
+                    <button class="primary-btn full-width mt-1">Book Now</button>
+                </div>
+
+                <!-- Package 2: Amaron Go -->
+                <div class="package-card popular-package">
+                    <div class="popular-badge">Most Popular</div>
+                    <div class="package-header">
+                        <h3>Amaron Go</h3>
+                        <div class="package-price">₹3,800</div>
+                    </div>
+                    <ul class="package-features">
+                        <li><i class='bx bx-check-circle'></i> 100% Genuine Amaron</li>
+                        <li><i class='bx bx-check-circle'></i> 44 Months Warranty</li>
+                        <li><i class='bx bx-check-circle'></i> Free Installation</li>
+                        <li><i class='bx bx-check-circle'></i> Zero Maintenance</li>
+                        <li><i class='bx bx-check-circle'></i> Old Battery Exchange</li>
+                    </ul>
+                    <button class="primary-btn full-width mt-1">Book Now</button>
+                </div>
+
+                <!-- Package 3: Amaron Flo -->
+                <div class="package-card">
+                    <div class="package-header">
+                        <h3>Amaron Flo</h3>
+                        <div class="package-price">₹4,599</div>
+                    </div>
+                    <ul class="package-features">
+                        <li><i class='bx bx-check-circle'></i> 100% Genuine Amaron</li>
+                        <li><i class='bx bx-check-circle'></i> 60 Months Warranty</li>
+                        <li><i class='bx bx-check-circle'></i> High Heat Tolerance</li>
+                        <li><i class='bx bx-check-circle'></i> Free Installation</li>
+                        <li><i class='bx bx-check-circle'></i> Old Battery Exchange</li>
+                    </ul>
+                    <button class="primary-btn full-width mt-1">Book Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wheel & Tyre Care Packages Modal -->
+    <div class="modal-overlay" id="tyreServiceModal">
+        <div class="modal-content" style="max-width: 1100px; padding: 2rem;">
+            <button class="close-modal" id="closeTyreServiceModal"><i class='bx bx-x'></i></button>
+            <div class="modal-header" style="text-align: center;">
+                <h2>Tyres & Wheel Care</h2>
+                <p>Advanced laser alignment and automated balancing for a smooth ride</p>
+            </div>
+            <div class="packages-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+                <!-- Package 1: Wheel Alignment -->
+                <div class="package-card">
+                    <div class="package-header">
+                        <h3>Wheel Alignment</h3>
+                        <div class="package-price">₹299</div>
+                    </div>
+                    <ul class="package-features">
+                        <li><i class='bx bx-check-circle'></i> Laser Automated Alignment</li>
+                        <li><i class='bx bx-check-circle'></i> Steering Adjustment</li>
+                        <li><i class='bx bx-check-circle'></i> Camber & Castor Check</li>
+                        <li><i class='bx bx-check-circle'></i> Suspension Inspection</li>
+                    </ul>
+                    <button class="primary-btn full-width mt-1">Book Now</button>
+                </div>
+
+                <!-- Package 2: Complete Wheel Care -->
+                <div class="package-card popular-package">
+                    <div class="popular-badge">Most Popular</div>
+                    <div class="package-header">
+                        <h3>Complete Wheel Care</h3>
+                        <div class="package-price">₹1,349</div>
+                    </div>
+                    <ul class="package-features">
+                        <li><i class='bx bx-check-circle'></i> Laser Wheel Alignment</li>
+                        <li><i class='bx bx-check-circle'></i> Automated Wheel Balancing</li>
+                        <li><i class='bx bx-check-circle'></i> Multi-Point Tyre Inspection</li>
+                        <li><i class='bx bx-check-circle'></i> Alloy Weight Included</li>
+                        <li><i class='bx bx-check-circle'></i> All 4 Tyre Rotation</li>
+                    </ul>
+                    <button class="primary-btn full-width mt-1">Book Now</button>
+                </div>
+
+                <!-- Package 3: Wheel Balancing -->
+                <div class="package-card">
+                    <div class="package-header">
+                        <h3>Wheel Balancing</h3>
+                        <div class="package-price">₹399</div>
+                    </div>
+                    <ul class="package-features">
+                        <li><i class='bx bx-check-circle'></i> Automated Balancing</li>
+                        <li><i class='bx bx-check-circle'></i> Alloy/Steel Weight</li>
+                        <li><i class='bx bx-check-circle'></i> Vibration Resolution</li>
+                        <li><i class='bx bx-check-circle'></i> Multi-point checking</li>
+                    </ul>
+                    <button class="primary-btn full-width mt-1">Book Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Denting & Painting Packages Modal -->
+    <div class="modal-overlay" id="dentingServiceModal">
+        <div class="modal-content" style="max-width: 1100px; padding: 2rem;">
+            <button class="close-modal" id="closeDentingServiceModal"><i class='bx bx-x'></i></button>
+            <div class="modal-header" style="text-align: center;">
+                <h2>Denting & Painting</h2>
+                <p>100% Color Match Guarantee with Premium DuPont Paint</p>
+            </div>
+            <div class="packages-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+                <!-- Package 1: Single Panel Dent -->
+                <div class="package-card">
+                    <div class="package-header">
+                        <h3>Dent Removal</h3>
+                        <div class="package-price">₹1,500</div>
+                    </div>
+                    <ul class="package-features">
+                        <li><i class='bx bx-check-circle'></i> Paintless Dent Removal</li>
+                        <li><i class='bx bx-check-circle'></i> Minor Scratches Polishing</li>
+                        <li><i class='bx bx-check-circle'></i> No Color Mismatch</li>
+                        <li><i class='bx bx-check-circle'></i> Same Day Delivery</li>
+                    </ul>
+                    <button class="primary-btn full-width mt-1">Book Now</button>
+                </div>
+
+                <!-- Package 2: Dent + Paint Per Panel -->
+                <div class="package-card popular-package">
+                    <div class="popular-badge">Most Popular</div>
+                    <div class="package-header">
+                        <h3>Dent + Paint (Per Panel)</h3>
+                        <div class="package-price">₹2,050</div>
+                    </div>
+                    <ul class="package-features">
+                        <li><i class='bx bx-check-circle'></i> Grade-A Primer Application</li>
+                        <li><i class='bx bx-check-circle'></i> 4 Layers of DuPont Paint</li>
+                        <li><i class='bx bx-check-circle'></i> Clear Coat Protective Layer</li>
+                        <li><i class='bx bx-check-circle'></i> 100% Color Match Guarantee</li>
+                        <li><i class='bx bx-check-circle'></i> 2-Year Paint Warranty</li>
+                    </ul>
+                    <button class="primary-btn full-width mt-1">Book Now</button>
+                </div>
+
+                <!-- Package 3: Full Body Repaint -->
+                <div class="package-card">
+                    <div class="package-header">
+                        <h3>Full Body Repaint</h3>
+                        <div class="package-price">₹22,550</div>
+                    </div>
+                    <ul class="package-features">
+                        <li><i class='bx bx-check-circle'></i> Complete Dent Removal</li>
+                        <li><i class='bx bx-check-circle'></i> Full Body Painting</li>
+                        <li><i class='bx bx-check-circle'></i> Panel Rubbing & Polishing</li>
+                        <li><i class='bx bx-check-circle'></i> Eco-Safe Branded Paints</li>
+                        <li><i class='bx bx-check-circle'></i> 2-Year Paint Warranty</li>
+                    </ul>
+                    <button class="primary-btn full-width mt-1">Book Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Windshield & Lights Packages Modal -->
+    <div class="modal-overlay" id="windshieldServiceModal">
+        <div class="modal-content" style="max-width: 1100px; padding: 2rem;">
+            <button class="close-modal" id="closeWindshieldServiceModal"><i class='bx bx-x'></i></button>
+            <div class="modal-header" style="text-align: center;">
+                <h2>Windshield & Lights</h2>
+                <p>ARAI certified continuous vision and genuine lighting fitments</p>
+            </div>
+            <div class="packages-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+                <!-- Package 1: Front Windshield -->
+                <div class="package-card popular-package">
+                    <div class="popular-badge">Most Popular</div>
+                    <div class="package-header">
+                        <h3>Front Windshield</h3>
+                        <div class="package-price">₹5,865</div>
+                    </div>
+                    <ul class="package-features">
+                        <li><i class='bx bx-check-circle'></i> ARAI Certified Glass</li>
+                        <li><i class='bx bx-check-circle'></i> High-Quality Sealant</li>
+                        <li><i class='bx bx-check-circle'></i> Free Pick-up & Drop</li>
+                        <li><i class='bx bx-check-circle'></i> 1 Month Warranty</li>
+                    </ul>
+                    <button class="primary-btn full-width mt-1">Book Now</button>
+                </div>
+
+                <!-- Package 2: Rear Windshield -->
+                <div class="package-card">
+                    <div class="package-header">
+                        <h3>Rear Windshield</h3>
+                        <div class="package-price">₹3,882</div>
+                    </div>
+                    <ul class="package-features">
+                        <li><i class='bx bx-check-circle'></i> ARAI Certified Glass</li>
+                        <li><i class='bx bx-check-circle'></i> Integrated Defogger Connect</li>
+                        <li><i class='bx bx-check-circle'></i> High-Quality Sealant</li>
+                        <li><i class='bx bx-check-circle'></i> 1 Month Warranty</li>
+                    </ul>
+                    <button class="primary-btn full-width mt-1">Book Now</button>
+                </div>
+
+                <!-- Package 3: Headlights & Fog Lights -->
+                <div class="package-card">
+                    <div class="package-header">
+                        <h3>Headlight Replacement</h3>
+                        <div class="package-price">₹2,999</div>
+                    </div>
+                    <ul class="package-features">
+                        <li><i class='bx bx-check-circle'></i> OES/OEM Brand Lights</li>
+                        <li><i class='bx bx-check-circle'></i> Headlight Alignment Check</li>
+                        <li><i class='bx bx-check-circle'></i> Halogen/LED Upgrades</li>
+                        <li><i class='bx bx-check-circle'></i> Free Pick-up & Drop</li>
+                    </ul>
+                    <button class="primary-btn full-width mt-1">Book Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Suspension Packages Modal -->
+    <div class="modal-overlay" id="suspensionServiceModal">
+        <div class="modal-content" style="max-width: 1100px; padding: 2rem;">
+            <button class="close-modal" id="closeSuspensionServiceModal"><i class='bx bx-x'></i></button>
+            <div class="modal-header" style="text-align: center;">
+                <h2>Suspension Services</h2>
+                <p>Ensure a smooth ride with our comprehensive suspension care</p>
+            </div>
+            <div class="packages-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+                <!-- Package 1: Suspension Inspection -->
+                <div class="package-card">
+                    <div class="package-header">
+                        <h3>Complete Inspection</h3>
+                        <div class="package-price">₹499</div>
+                    </div>
+                    <ul class="package-features">
+                        <li><i class='bx bx-check-circle'></i> 25-Point Suspension Check</li>
+                        <li><i class='bx bx-check-circle'></i> Steering & Axle Inspection</li>
+                        <li><i class='bx bx-check-circle'></i> Visual Bush & Joint Check</li>
+                        <li><i class='bx bx-check-circle'></i> Upfront Cost Estimate</li>
+                    </ul>
+                    <button class="primary-btn full-width mt-1">Book Now</button>
+                </div>
+
+                <!-- Package 2: Front Shock Absorber -->
+                <div class="package-card popular-package">
+                    <div class="popular-badge">Most Popular</div>
+                    <div class="package-header">
+                        <h3>Front Shock Absorber</h3>
+                        <div class="package-price">₹3,100</div>
+                    </div>
+                    <ul class="package-features">
+                        <li><i class='bx bx-check-circle'></i> OES Shocker Strut (Pair)</li>
+                        <li><i class='bx bx-check-circle'></i> Shocker Mount Replacement</li>
+                        <li><i class='bx bx-check-circle'></i> Free Pick-up & Drop</li>
+                        <li><i class='bx bx-check-circle'></i> 1 Month Warranty</li>
+                    </ul>
+                    <button class="primary-btn full-width mt-1">Book Now</button>
+                </div>
+
+                <!-- Package 3: Rear Shock Absorber -->
+                <div class="package-card">
+                    <div class="package-header">
+                        <h3>Rear Shock Absorber</h3>
+                        <div class="package-price">₹2,500</div>
+                    </div>
+                    <ul class="package-features">
+                        <li><i class='bx bx-check-circle'></i> OES Shocker Strut (Pair)</li>
+                        <li><i class='bx bx-check-circle'></i> Visual Spring Check</li>
+                        <li><i class='bx bx-check-circle'></i> Free Pick-up & Drop</li>
+                        <li><i class='bx bx-check-circle'></i> 1 Month Warranty</li>
+                    </ul>
+                    <button class="primary-btn full-width mt-1">Book Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Clutch & Body Parts Packages Modal -->
+    <div class="modal-overlay" id="clutchServiceModal">
+        <div class="modal-content" style="max-width: 1100px; padding: 2rem;">
+            <button class="close-modal" id="closeClutchServiceModal"><i class='bx bx-x'></i></button>
+            <div class="modal-header" style="text-align: center;">
+                <h2>Clutch & Body Parts</h2>
+                <p>Genuine OES/OEM spare parts with certified professional installation</p>
+            </div>
+            <div class="packages-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+                <!-- Package 1: Front Bumper -->
+                <div class="package-card">
+                    <div class="package-header">
+                        <h3>Front Bumper Replacement</h3>
+                        <div class="package-price">₹2,500</div>
+                    </div>
+                    <ul class="package-features">
+                        <li><i class='bx bx-check-circle'></i> 100% Genuine OES Bumper</li>
+                        <li><i class='bx bx-check-circle'></i> Free Pick-up & Drop</li>
+                        <li><i class='bx bx-check-circle'></i> Paint & Primer Included</li>
+                        <li><i class='bx bx-check-circle'></i> 1 Month Fitment Warranty</li>
+                    </ul>
+                    <button class="primary-btn full-width mt-1">Book Now</button>
+                </div>
+
+                <!-- Package 2: Clutch Set Replacement -->
+                <div class="package-card popular-package">
+                    <div class="popular-badge">Most Popular</div>
+                    <div class="package-header">
+                        <h3>Clutch Set Replacement</h3>
+                        <div class="package-price">₹5,500</div>
+                    </div>
+                    <ul class="package-features">
+                        <li><i class='bx bx-check-circle'></i> OES Clutch Set</li>
+                        <li><i class='bx bx-check-circle'></i> Clutch Oil Replacement</li>
+                        <li><i class='bx bx-check-circle'></i> Gear Oil Replacement</li>
+                        <li><i class='bx bx-check-circle'></i> 1 Month Warranty</li>
+                    </ul>
+                    <button class="primary-btn full-width mt-1">Book Now</button>
+                </div>
+
+                <!-- Package 3: Complete Clutch Overhaul -->
+                <div class="package-card">
+                    <div class="package-header">
+                        <h3>Complete Clutch Overhaul</h3>
+                        <div class="package-price">₹6,500</div>
+                    </div>
+                    <ul class="package-features">
+                        <li><i class='bx bx-check-circle'></i> Clutch Set & Bearing</li>
+                        <li><i class='bx bx-check-circle'></i> Flywheel Replacement</li>
+                        <li><i class='bx bx-check-circle'></i> Gear & Clutch Oil</li>
+                        <li><i class='bx bx-check-circle'></i> 1 Month Warranty</li>
+                    </ul>
+                    <button class="primary-btn full-width mt-1">Book Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Appointment Basics Modal -->
+    <div class="modal-overlay" id="appointmentModal">
+        <div class="modal-content" style="max-width: 500px; padding: 2rem;">
+            <button class="close-modal" id="closeAppointmentModal"><i class='bx bx-x'></i></button>
+            <div class="modal-header" style="text-align: center; border-bottom: none; margin-bottom: 0;">
+                <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem;"><i class='bx bx-calendar-star'></i> Book Appointment</h2>
+                <p style="color: var(--text-muted);">Select preferred date and time for <strong id="appointmentServiceName">Service</strong></p>
+            </div>
+            <div style="margin-top: 1.5rem;">
+                <div class="form-group" style="position: relative;">
+                    <label>Preferred Date</label>
+                    <input type="text" id="appointmentDate" placeholder="Select Date (DD-MM-YYYY)" style="width: 100%; padding: 0.8rem 1rem; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-main); font-family: inherit; font-size: 0.95rem; box-sizing: border-box;" required>
+                    <i class='bx bx-calendar' style="position: absolute; right: 1rem; top: 2.7rem; font-size: 1.3rem; color: var(--primary); pointer-events: none;"></i>
+                </div>
+                <div class="form-group">
+                    <label>Preferred Time</label>
+                    <div class="custom-select">
+                        <select id="appointmentTime" required>
+                            <option value="" disabled selected>Select Time Slot</option>
+                            <option value="09:00 AM - 11:00 AM">09:00 AM - 11:00 AM</option>
+                            <option value="11:00 AM - 01:00 PM">11:00 AM - 01:00 PM</option>
+                            <option value="02:00 PM - 04:00 PM">02:00 PM - 04:00 PM</option>
+                            <option value="04:00 PM - 06:00 PM">04:00 PM - 06:00 PM</option>
+                        </select>
+                        <i class='bx bx-chevron-down select-icon'></i>
+                    </div>
+                </div>
+                <button id="confirmAppointmentBtn" class="primary-btn full-width" style="margin-top: 1rem;">Confirm Booking</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

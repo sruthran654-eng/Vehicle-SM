@@ -1,0 +1,6 @@
+@echo off
+echo Starting local server on port 3000...
+echo Opening Edge browser...
+start microsoft-edge:http://localhost:3000
+node server.js
+pause

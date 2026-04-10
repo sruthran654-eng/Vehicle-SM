@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Reviews - DriveHub</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Boxicons for modern icons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+
+    <meta name="description" content="Read what our customers say about DriveHub services">
+</head>
+
+<body>
+    <!-- Top Navbar -->
+    <nav class="top-navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <a href="index.html" class="logo-area" style="text-decoration:none;">
+                    <div class="logo-icon"><i class='bx bx-car'></i></div>
+                    <span class="logo-text">DriveHub</span>
+                </a>
+            </div>
+
+            <div class="nav-right">
+                <a href="index.html" class="nav-link">Home</a>
+                <button class="primary-btn">Login</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sub Navigation -->
+    <div style="background: var(--bg-white); padding: 12px 0;">
+        <div class="nav-container" style="justify-content: flex-start; gap: 2rem;">
+            <a href="contact.html" class="nav-link">ContactUs</a>
+            <a href="offers.html" class="nav-link">Offers</a>
+            <a href="reviews.html" class="nav-link" style="color: var(--primary);">Reviews</a>
+            <a href="about.html" class="nav-link">About Us</a>
+            <a href="faqs.html" class="nav-link">FAQs</a>
+        </div>
+    </div>
+
+    <!-- Reviews Section -->
+    <section class="reviews-section" style="min-height: 80vh; display: flex; align-items: center; justify-content: center;">
+        <div class="section-container" style="width: 100%;">
+            <h2 class="section-title">What Our Customers Say</h2>
+            <div class="reviews-grid">
+                <!-- Review 1 -->
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="reviewer-info">
+                            <div class="reviewer-avatar">R</div>
+                            <div>
+                                <h4>Rahul Sharma</h4>
+                                <span class="review-date">Hyundai i20 Owner</span>
+                            </div>
+                        </div>
+                        <div class="star-rating">
+                            <i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bx-star'></i>
+                        </div>
+                    </div>
+                    <p class="review-text">"Excellent service! The pickup and drop were completely hassle-free. The mechanic explained everything very clearly, and there were no hidden charges."</p>
+                </div>
+
+                <!-- Review 2 -->
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="reviewer-info">
+                            <div class="reviewer-avatar">P</div>
+                            <div>
+                                <h4>Priya Patel</h4>
+                                <span class="review-date">Honda City Owner</span>
+                            </div>
+                        </div>
+                        <div class="star-rating">
+                            <i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star-half'></i>
+                        </div>
+                    </div>
+                    <p class="review-text">"Got my car's AC serviced here. Very professional work, and the cooling is significantly better now. Highly recommend DriveHub!"</p>
+                </div>
+
+                <!-- Review 3 -->
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="reviewer-info">
+                            <div class="reviewer-avatar">A</div>
+                            <div>
+                                <h4>Amit Kumar</h4>
+                                <span class="review-date">BMW 3 Series Owner</span>
+                            </div>
+                        </div>
+                        <div class="star-rating">
+                            <i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i><i class='bx bxs-star'></i>
+                        </div>
+                    </div>
+                    <p class="review-text">"Hard to find workshops you can trust with luxury cars. DriveHub did a fantastic job with my regular service. Very affordable compared to authorized centers."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Notification Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - DriveHub</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Boxicons for modern icons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+
+    <meta name="description" content="Learn more about DriveHub and our mission to provide the best vehicle services.">
+</head>
+
+<body>
+    <!-- Top Navbar -->
+    <nav class="top-navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <a href="index.html" class="logo-area" style="text-decoration:none;">
+                    <div class="logo-icon"><i class='bx bx-car'></i></div>
+                    <span class="logo-text">DriveHub</span>
+                </a>
+            </div>
+
+            <div class="nav-right">
+                <a href="index.html" class="nav-link">Home</a>
+                <button class="primary-btn">Login</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sub Navigation -->
+    <div style="background: var(--bg-white); padding: 12px 0;">
+        <div class="nav-container" style="justify-content: flex-start; gap: 2rem;">
+            <a href="contact.html" class="nav-link">ContactUs</a>
+            <a href="offers.html" class="nav-link">Offers</a>
+            <a href="reviews.html" class="nav-link">Reviews</a>
+            <a href="about.html" class="nav-link" style="color: var(--primary);">About Us</a>
+            <a href="faqs.html" class="nav-link">FAQs</a>
+        </div>
+    </div>
+
+    <!-- About Section -->
+    <section class="about-section" style="min-height: 80vh; padding: 4rem 1.5rem; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--bg-main);">
+        <div class="section-container" style="width: 100%; max-width: 800px; text-align: center;">
+            <h2 class="section-title">About Us</h2>
+            <div class="glass-card" style="background: var(--bg-white); padding: 3rem; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: var(--glass-shadow);">
+                <div class="logo-icon" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"><i class='bx bx-car'></i></div>
+                <h3 style="font-size: 1.8rem; margin-bottom: 1rem; color: var(--text-main); font-family: 'Outfit', sans-serif;">DriveHub</h3>
+                <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.8; margin-bottom: 1.5rem;">We are a premium vehicle service management system dedicated to providing top-notch maintenance and repair services for your cars and bikes. Our expert mechanics use genuine parts to ensure your vehicle runs smoothly.</p>
+                <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.8;">With DriveHub, you experience hassle-free booking, transparent pricing, and excellent customer support.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Notification Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

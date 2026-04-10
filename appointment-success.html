@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmed - DriveHub</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background: var(--bg-main);
+        }
+
+        .success-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .success-card {
+            background: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 3rem 2rem;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .success-icon {
+            font-size: 5rem;
+            color: #22c55e; /* Success Green */
+            margin-bottom: 1rem;
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .success-title {
+            font-size: 2rem;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+        }
+
+        .success-subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .details-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: left;
+            margin-bottom: 2rem;
+        }
+
+        .detail-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .detail-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .detail-icon {
+            font-size: 1.5rem;
+            color: var(--primary);
+            background: rgba(250, 204, 21, 0.1);
+            padding: 0.5rem;
+            border-radius: 8px;
+        }
+
+        .detail-content h4 {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 0.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .detail-content p {
+            font-size: 1.1rem;
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+        .contact-box {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: rgba(250, 204, 21, 0.1);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            font-weight: 600;
+            margin-bottom: 2rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body class="dark-theme">
+
+    <nav class="top-navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <a href="index.html" class="logo-area" style="text-decoration: none;">
+                    <i class='bx bxs-car-mechanic logo-icon'></i>
+                    <span class="logo-text">DriveHub</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="success-container">
+        <div class="success-card">
+            <i class='bx bxs-check-circle success-icon'></i>
+            <h1 class="success-title">Booking Confirmed!</h1>
+            <p class="success-subtitle">Your service request has been successfully recorded.</p>
+
+            <div class="details-box">
+                <div class="detail-row">
+                    <div class="detail-icon"><i class='bx bx-wrench'></i></div>
+                    <div class="detail-content">
+                        <h4>Service Booked</h4>
+                        <p id="dispService">-</p>
+                    </div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-icon"><i class='bx bx-calendar-event'></i></div>
+                    <div class="detail-content">
+                        <h4>Scheduled Date</h4>
+                        <p id="dispDate">-</p>
+                    </div>
+                </div>
+                <div class="detail-row">
+                    <div class="detail-icon"><i class='bx bx-time-five'></i></div>
+                    <div class="detail-content">
+                        <h4>Time Slot</h4>
+                        <p id="dispTime">-</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-box">
+                <i class='bx bxs-phone'></i> Support: +91 96594 53226
+            </div>
+
+            <div class="action-buttons">
+                <button class="primary-btn" onclick="window.location.href='index.html';" style="padding: 0.8rem 2rem;">Back to Home</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const dataStr = localStorage.getItem('drivehub_appointment');
+            if (dataStr) {
+                try {
+                    const data = JSON.parse(dataStr);
+                    if (data.service) document.getElementById('dispService').innerText = data.service;
+                    if (data.date) document.getElementById('dispDate').innerText = data.date;
+                    if (data.time) document.getElementById('dispTime').innerText = data.time;
+                    
+                    // Optional: clear it so revisiting the page is clean, or keep it for refresh?
+                    // localStorage.removeItem('drivehub_appointment');
+                } catch(e) { console.error('Error parsing booking data', e); }
+            } else {
+                // Not found
+                document.getElementById('dispService').innerText = 'Standard Package';
+                document.getElementById('dispDate').innerText = 'To be communicated';
+                document.getElementById('dispTime').innerText = 'To be communicated';
+            }
+        });
+    </script>
+</body>
+</html>

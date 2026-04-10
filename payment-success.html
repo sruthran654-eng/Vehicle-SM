@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful - DriveHub</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background: var(--bg-main);
+        }
+
+        .success-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .success-card {
+            background: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 3rem 2rem;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .success-icon {
+            font-size: 5rem;
+            color: #22c55e;
+            margin-bottom: 1rem;
+            animation: bounceIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .success-title {
+            font-size: 2rem;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+        }
+
+        .success-subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .payment-details {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .detail-label {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .detail-val {
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 1.05rem;
+        }
+
+        .total-row {
+            border-top: 1px dashed var(--border-color);
+            margin-top: 0.8rem;
+            padding-top: 1.2rem;
+        }
+
+        .total-row .detail-val {
+            font-size: 1.3rem;
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body class="dark-theme">
+
+    <nav class="top-navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <a href="index.html" class="logo-area" style="text-decoration: none;">
+                    <i class='bx bxs-car-mechanic logo-icon'></i>
+                    <span class="logo-text">DriveHub</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="success-container">
+        <div class="success-card">
+            <i class='bx bxs-check-shield success-icon'></i>
+            <h1 class="success-title">Order Confirmed!</h1>
+            <p class="success-subtitle">Your transaction has been processed successfully.</p>
+
+            <div class="payment-details">
+                <div class="detail-row">
+                    <span class="detail-label">Payment Method</span>
+                    <span class="detail-val" id="dispMethod">UPI</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Transaction ID</span>
+                    <span class="detail-val" id="dispTxn" style="font-family: monospace; letter-spacing: 1px;">TXN...</span>
+                </div>
+                <div class="detail-row total-row">
+                    <span class="detail-label">Total Amount</span>
+                    <span class="detail-val" id="dispTotal">₹0</span>
+                </div>
+            </div>
+
+            <button class="primary-btn full-width" onclick="window.location.href='index.html';" style="padding: 1rem; font-size: 1.1rem;">
+                Return to Dashboard
+            </button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Generate a random Transaction ID
+            const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            let txn = 'TXN';
+            for (let i = 0; i < 12; i++) {
+                txn += chars[Math.floor(Math.random() * chars.length)];
+            }
+            document.getElementById('dispTxn').innerText = txn;
+
+            // Load data from localStorage
+            const stored = localStorage.getItem('drivehub_order');
+            if (stored) {
+                try {
+                    const data = JSON.parse(stored);
+                    if (data.method) document.getElementById('dispMethod').innerText = data.method;
+                    if (data.total) document.getElementById('dispTotal').innerText = data.total;
+                } catch(e) { console.error('Error standardizing final output', e); }
+            }
+        });
+    </script>
+</body>
+</html>
